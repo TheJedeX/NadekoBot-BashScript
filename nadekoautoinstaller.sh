@@ -50,13 +50,14 @@ detect_OS_ARCH_VER_BITS
 
 export OS ARCH VER BITS
 
-if [ "$BITS" = 32 ]; then
-	echo -e "Your system architecture is $ARCH which is unsupported to run Microsoft .NET Core SDK. \nYour OS: $OS \nOS Version: $VER"
-	echo
-	printf "\e[1;31mPlease check the NadekoBot self-hosting guide for alternatives.\e[0m\n"
-	rm nadekoautoinstaller.sh
-	exit 1
-fi
+## ELIMINAR CONDICIONANTE IF E INSTALAR .NET CORE MANUALMENTE EN RPI
+#if [ "$BITS" = 32 ]; then
+#	echo -e "Your system architecture is $ARCH which is unsupported to run Microsoft .NET Core SDK. \nYour OS: $OS \nOS Version: $VER"
+#	echo
+#	printf "\e[1;31mPlease check the NadekoBot self-hosting guide for alternatives.\e[0m\n"
+#	rm nadekoautoinstaller.sh
+#	exit 1
+#fi
 
 if [ "$OS" = "Ubuntu" ]; then
 	if [ "$VER" = "12.04" ]; then
@@ -173,10 +174,12 @@ elif [ "$OS" = "Debian" ]; then
 		apt-get upgrade -y
 		apt-get install sudo -y
 		sudo apt-get install software-properties-common apt-transport-https -y
-		sudo apt-get install curl libunwind8 gettext -y
-		curl -sSL -o dotnet.tar.gz https://go.microsoft.com/fwlink/?LinkID=835021
-		sudo mkdir -p /opt/dotnet && sudo tar zxf dotnet.tar.gz -C /opt/dotnet
-		sudo ln -s /opt/dotnet/dotnet /usr/local/bin
+		
+########## REMOVER SCRIPT DE INSTALACION AUTOMATICA PARA INSTALAR MANUALMENTE BINARIOS ARM32. https://blogs.msdn.microsoft.com/david/2017/07/20/setting_up_raspian_and_dotnet_core_2_0_on_a_raspberry_pi/		
+#		sudo apt-get install curl libunwind8 gettext -y
+#		curl -sSL -o dotnet.tar.gz https://go.microsoft.com/fwlink/?LinkID=835021
+#		sudo mkdir -p /opt/dotnet && sudo tar zxf dotnet.tar.gz -C /opt/dotnet
+#		sudo ln -s /opt/dotnet/dotnet /usr/local/bin
 		echo "Installing prerequisites..."
 		echo "deb http://ftp.debian.org/debian jessie-backports main" | tee /etc/apt/sources.list.d/debian-backports.list
 		sudo apt-get update && sudo apt install ffmpeg -y
